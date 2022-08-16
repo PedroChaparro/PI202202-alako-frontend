@@ -1,4 +1,9 @@
 /*Variables*/
+:root {
+	--border-color: #dbdbdb;
+	--shine-background: #f0f0f0;
+	--shine-bright: #fafafa;
+}
 
 /*Global styles*/
 * {
@@ -21,7 +26,7 @@ body {
 .header {
 	display: flex;
 	align-items: center;
-	min-height: 300px;
+	min-height: 320px;
 	background: url('/images/header-image.jpg') no-repeat center center / cover; /* Fallback */
 	background: linear-gradient(
 			to right,
@@ -60,6 +65,8 @@ body {
 	position: absolute;
 	top: 0;
 	left: 12px;
+
+	cursor: pointer;
 }
 
 .header__search-icon img {
@@ -81,6 +88,83 @@ body {
 
 ::placeholder {
 	color: #bebebe;
+}
+
+/* Content placeholders */
+.videos-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	justify-content: space-between;
+	align-items: center;
+	margin-block-start: 16px;
+}
+
+.video-placeholder {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 30%;
+	overflow: hidden;
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+	padding: 8px;
+}
+
+.video-placeholder__image,
+.video-placeholder__title,
+.video-placeholder__tag {
+	position: relative;
+	overflow: hidden;
+	height: 30px;
+	background-color: var(--shine-background);
+}
+
+.video-placeholder__image::after,
+.video-placeholder__title::after,
+.video-placeholder__tag::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+
+	/*Change element position to the right*/
+	transform: translateX(100%);
+
+	/*Animate*/
+	z-index: 1;
+	animation: slide 3s infinite;
+
+	background: linear-gradient(
+		to right,
+		rgba(255, 255, 255, 0) 0%,
+		var(--shine-bright) 50%,
+		rgba(255, 255, 255, 0) 100%
+	);
+}
+
+.video-placeholder__image {
+	width: 100%;
+	height: 172px;
+}
+
+.video-placeholder__tags {
+	display: flex;
+	gap: 12px;
+}
+
+.video-placeholder__tag {
+	width: 33%;
+}
+
+@keyframes slide {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
 }
 
 /*Responsive*/
