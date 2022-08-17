@@ -29,11 +29,7 @@ body {
 	align-items: center;
 	min-height: 320px;
 	background: url('/images/header-image.jpg') no-repeat center center / cover; /* Fallback */
-	background: linear-gradient(
-			to right,
-			rgb(218, 34, 255, 0.75),
-			rgb(151, 51, 238, 0.75)
-		),
+	background: linear-gradient(to right, rgb(218, 34, 255, 0.75), rgb(151, 51, 238, 0.75)),
 		url('/images/header-image.jpg') no-repeat center center / cover;
 }
 
