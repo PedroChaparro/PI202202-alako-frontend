@@ -1,0 +1,18 @@
+{
+	"name": "pi202202-alako-frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite src",
+		"build": "vite build src",
+		"preview": "vite preview src",
+		"lint": "eslint . --fix"
+	},
+	"devDependencies": {
+		"eslint": "^8.22.0",
+		"eslint-config-prettier": "^8.5.0",
+		"prettier": "^2.7.1",
+		"vite": "^3.0.7"
+	}
+}
