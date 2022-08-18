@@ -1,8 +1,13 @@
 /*Variables*/
-:root {
+.theme-light {
+	/*Default variables to light mode*/
+	--bg: white;
+	--card-bg: white;
 	--border-color: #dbdbdb;
 	--shine-background: #f0f0f0;
 	--shine-bright: #fafafa;
+
+	/*TODO: Variables de las cards para los videos*/
 }
 
 /*Global styles*/
@@ -14,6 +19,7 @@
 
 body {
 	font-family: 'Inter', sans-serif;
+	background-color: var(--bg);
 }
 
 /*Reusable classes*/
@@ -23,7 +29,9 @@ body {
 	margin: 0px auto;
 }
 
+/* #### #### #### #### #### ####*/
 /*Header*/
+/* #### #### #### #### #### ####*/
 .header {
 	display: flex;
 	align-items: center;
@@ -55,6 +63,7 @@ body {
 }
 
 .header__search-icon {
+	/*Position the icon inside the search bar*/
 	display: flex;
 	align-items: center;
 	height: 100%;
@@ -87,7 +96,9 @@ body {
 	color: #bebebe;
 }
 
-/* Content placeholders */
+/* #### #### #### #### #### ####*/
+/* Content placeholders (light mode) */
+/* #### #### #### #### #### ####*/
 .videos-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -97,6 +108,7 @@ body {
 	margin-block-start: 16px;
 }
 
+/*Card*/
 .video-placeholder {
 	display: flex;
 	flex-direction: column;
@@ -104,7 +116,9 @@ body {
 	width: 32%;
 	min-width: 240px;
 	overflow: hidden;
+
 	border: 1px solid var(--border-color);
+	background-color: var(--card-bg);
 	border-radius: 8px;
 	padding: 8px;
 }
@@ -148,7 +162,7 @@ body {
 }
 
 .video-placeholder__tags {
-	display: flex;
+	display: flex; /*Row*/
 	gap: 12px;
 }
 
@@ -165,7 +179,9 @@ body {
 	}
 }
 
+/* #### #### #### #### #### ####*/
 /*Responsive*/
+/* #### #### #### #### #### ####*/
 @media screen and (max-width: 992px) {
 	.container {
 		padding: 0px 24px;
