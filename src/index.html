@@ -2,12 +2,108 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<link rel="stylesheet" href="style.css" />
+		<!-- Google fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<title>ALAKO</title>
 	</head>
-	<body>
-		<div id="app"></div>
+	<body class="theme-light">
+		<header class="header">
+			<div class="container">
+				<div class="header__title-container">
+					<h1 class="header__title" translate="no">ALAKO</h1>
+					<div class="theme-icon">
+						<img
+							src="/icons/moon-icon.svg"
+							alt="Change to dark theme icon"
+							aria-label="Change to dark theme"
+						/>
+					</div>
+				</div>
+				<div class="header__input-container">
+					<div class="header__search-icon">
+						<img src="/icons/search-icon.svg" alt="Search icon" aria-label="Search" />
+					</div>
+					<form>
+						<input
+							class="header__input"
+							type="text"
+							name="search-criteria"
+							id="search-criteria"
+							placeholder="Search videos here"
+							autocomplete="off"
+							autofocus
+						/>
+					</form>
+				</div>
+			</div>
+		</header>
+
+		<main class="content">
+			<section class="videos-container container">
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+			</section>
+		</main>
 		<script type="module" src="/main.js"></script>
 	</body>
 </html>
