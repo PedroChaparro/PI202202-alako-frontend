@@ -187,3 +187,16 @@ body {
 		padding: 0px 24px;
 	}
 }
+
+/*Variables*/
+.theme-dark {
+	/*Default variables to dark mode*/
+	--bg: rgb(36, 35, 40);
+	--card-bg: rgb(71, 67, 75);
+	--border-color: rgb(36, 35, 40);
+	--shine-background: rgb(36, 35, 40);
+	--shine-bright: #3f3e3e;
+
+	/*TODO: Variables de las cards para los videos*/
+}
+
