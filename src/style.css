@@ -6,6 +6,9 @@
 	--border-color: #dbdbdb;
 	--shine-background: #f0f0f0;
 	--shine-bright: #fafafa;
+	--tag-color: #eaeaea;
+	--label-color:#000000;
+	--label-tag-color: #8b8b8b;
 
 	/*TODO: Variables de las cards para los videos*/
 }
@@ -128,13 +131,14 @@ body {
 .video-placeholder__tag {
 	position: relative;
 	overflow: hidden;
-	height: 30px;
-	background-color: var(--shine-background);
+	height: 60px;
+	text-align: center;
+	/* background-color: var(--shine-background); */
 }
 
-.video-placeholder__image::after,
-.video-placeholder__title::after,
-.video-placeholder__tag::after {
+/* .video-placeholder__image::after, */
+/* .video-placeholder__title::after, */
+/* .video-placeholder__tag::after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -142,9 +146,9 @@ body {
 	height: 100%;
 
 	/*Change element position to the right*/
-	transform: translateX(100%);
+	/* transform: translateX(100%); */
 
-	/*Animate*/
+	/*Animate
 	z-index: 1;
 	animation: slide 3s infinite;
 
@@ -154,7 +158,7 @@ body {
 		var(--shine-bright) 50%,
 		rgba(255, 255, 255, 0) 100%
 	);
-}
+}*/
 
 .video-placeholder__image {
 	width: 100%;
@@ -162,12 +166,19 @@ body {
 }
 
 .video-placeholder__tags {
-	display: flex; /*Row*/
+	display: inline; /*Row*/
 	gap: 12px;
+
 }
 
 .video-placeholder__tag {
-	width: 33%;
+	width: 60%;
+	height: 22px;
+	text-align: center;
+	border-radius: 5px;
+	margin: 2px 2px ;
+	background-color: var(--tag-color);
+	color: var(--label-tag-color) ;
 }
 
 @keyframes slide {
@@ -192,11 +203,37 @@ body {
 .theme-dark {
 	/*Default variables to dark mode*/
 	--bg: rgb(36, 35, 40);
-	--card-bg: rgb(71, 67, 75);
+	--card-bg: rgb(51, 51, 51);
 	--border-color: rgb(36, 35, 40);
 	--shine-background: rgb(36, 35, 40);
 	--shine-bright: #3f3e3e;
+	--tag-color:  #494949;
+	--label-color: #ffffff;
+	--label-tag-color: #dfdfdf;
 
 	/*TODO: Variables de las cards para los videos*/
+}
+
+.video-placeholder__image img{
+	/* width: 100%; */
+	height: 100%;
+	/* object-fit:fill; */
+
+}
+
+.video-placeholder__title label{
+
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--label-color);
+	
+}
+
+.video-placeholder__tag label{
+
+	font-size: 13px;
+	color: var(--label-tag-color);
+	
+	
 }
 
