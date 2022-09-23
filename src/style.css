@@ -10,6 +10,19 @@
 	/*TODO: Variables de las cards para los videos*/
 }
 
+/*Variables*/
+.theme-dark {
+	/*Default variables to dark mode*/
+	--bg: #181824;
+	--card-bg: #25273e;
+	--border-color: #3c3c3c;
+	--shine-background: #1e1e33;
+	--shine-bright: #282a4a;
+	--tag-color: #494949;
+	--label-color: #ffffff;
+	--label-tag-color: #dfdfdf;
+}
+
 /*Global styles*/
 * {
 	margin: 0px;
@@ -180,32 +193,11 @@ body {
 }
 
 /* #### #### #### #### #### ####*/
-/*Responsive*/
+/*Videos cards*/
 /* #### #### #### #### #### ####*/
-@media screen and (max-width: 992px) {
-	.container {
-		padding: 0px 24px;
-	}
-}
-
-/*Variables*/
-.theme-dark {
-	/*Default variables to dark mode*/
-	--bg: #1E1E1E;;
-	--card-bg:#25273E;
-	--border-color: #3C3C3C;
-	--shine-background: #1E1E33;
-	--shine-bright: #282A4A;
-	--tag-color:  #494949;
-	--label-color: #ffffff;
-	--label-tag-color: #dfdfdf;
-
-	/*TODO: Variables de las cards para los videos*/
-}
 
 /* Class-cards */
-
-.video{
+.video {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -219,33 +211,34 @@ body {
 	padding: 8px;
 }
 
-.video-image
-.video-title
-.video-tag
-{
+.video-image .video-title .video-tag {
 	position: relative;
 	overflow: hidden;
 	height: 30px;
 }
 
-.video-image img{
+.video-image img {
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	
-
 }
 
-.video-title h2{
-
+.video-title h2 {
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--label-color);
-	
 }
 
-.video-tag{
+.video-tag {
 	font-size: 8px;
 	color: var(--label-tag-color);
 }
 
+/* #### #### #### #### #### ####*/
+/*Responsive*/
+/* #### #### #### #### #### ####*/
+@media screen and (max-width: 992px) {
+	.container {
+		padding: 0px 24px;
+	}
+}
