@@ -223,9 +223,10 @@ body {
 	text-align: center;
 }
 
-.video-title h2 {
-	font-size: 14px;
+.video-title {
+	font-size: 1.2rem;
 	font-weight: 600;
+	text-align: center;
 	color: var(--label-color);
 }
 
