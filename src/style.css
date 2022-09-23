@@ -214,12 +214,14 @@ body {
 	padding: 8px;
 }
 
-.video-image img {
+.video-image img{
 	width: 100%;
 	height: 100%;
 	text-align: center;
 }
-
+.video-image{
+	position: relative;
+}
 .video-title {
 	font-size: 1.2rem;
 	font-weight: 600;
@@ -250,6 +252,20 @@ body {
 	background-color: var(--label-bg);
 }
 
+/* play button on video */
+.video:hover .video-play figcaption img{
+
+	display: block;
+
+}
+.video-play figcaption img{
+	display: none;
+	position: absolute;
+	top: 46px;
+	left: 110px;
+	width: 80px;
+	height: 80px;
+}
 /* #### #### #### #### #### ####*/
 /*Responsive*/
 /* #### #### #### #### #### ####*/
