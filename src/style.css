@@ -36,7 +36,7 @@
 /* Custom font */
 @font-face {
 	font-family: 'Inter';
-	src: url('./public/fonts/Inter-VariableFont_slnt\,wght.ttf');
+	src: url('./public/fonts/Inter-Medium.ttf');
 }
 
 /*Global styles*/
