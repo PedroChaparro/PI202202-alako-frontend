@@ -128,7 +128,7 @@ body {
 	gap: 16px;
 	justify-content: center;
 	align-items: center;
-	margin-block-start: 16px;
+	margin-block: 16px;
 }
 
 /*Card*/
@@ -219,9 +219,17 @@ body {
 	background-color: var(--card-bg);
 	border-radius: 8px;
 	padding: 8px;
+
+	transition: scale 0.3s ease-in-out;
+}
+
+.video:hover {
+	scale: 1.03;
 }
 
 .video-image img {
+	position: relative;
+
 	width: 100%;
 	aspect-ratio: 16/9;
 	object-fit: cover;
@@ -230,16 +238,18 @@ body {
 }
 
 .video-image-container {
+	position: relative;
 	overflow: hidden;
 }
 
-.video-image {
-	position: relative;
-}
 .video-title {
 	font-size: var(--fz-md);
 	font-weight: 600;
 	text-align: center;
+}
+
+.video-title a {
+	text-decoration: none;
 	color: var(--card-title-color);
 }
 
@@ -277,7 +287,10 @@ body {
 
 	justify-content: center;
 	align-items: center;
+
 	position: absolute;
+	top: 0;
+	left: 0;
 
 	width: 100%;
 	aspect-ratio: 16/9;
