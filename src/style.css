@@ -33,6 +33,12 @@
 	--label-bg: #4b4e6c;
 }
 
+/* Custom font */
+@font-face {
+	font-family: 'Inter';
+	src: url('./public/fonts/Inter-VariableFont_slnt\,wght.ttf');
+}
+
 /*Global styles*/
 * {
 	margin: 0px;
