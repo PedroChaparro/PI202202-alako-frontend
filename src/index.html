@@ -20,7 +20,7 @@
 					<div class="header__search-icon">
 						<img src="/icons/search-icon.svg" alt="Search icon" />
 					</div>
-					<form>
+					<form id="formulario">
 						<input
 							class="header__input"
 							type="text"
@@ -36,7 +36,7 @@
 		</header>
 
 		<main class="content">
-			<section class="videos-container container">
+			<section id="articles-container" class="videos-container container">
 				<article class="video-placeholder">
 					<div class="video-placeholder__image"></div>
 					<div class="video-placeholder__title"></div>
@@ -92,201 +92,44 @@
 					</div>
 				</article>
 
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
-
-					<h2 class="video-title">
+				<template>
+					<article class="video">
 						<a
 							href="https://youtu.be/X61yReOfU0k"
 							target="_blank"
 							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
+							id="url"
 						>
-					</h2>
+							<div class="video-image">
+								<!--Video image-->
+								<div class="video-image-container">
+									<img class="img-video" src="" alt="" />
+									<!--Play button container-->
+									<div class="video-play">
+										<img src="" alt="" />
+									</div>
+								</div></div
+						></a>
 
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
+						<h2 class="video-title">
+							<a
+								href="https://youtu.be/X61yReOfU0k"
+								target="_blank"
+								referrerpolicy="no-referrer"
+								id="title"
+								></a
+							>
+						</h2>
 
-					<h2 class="video-title">
-						<a
-							href="https://youtu.be/X61yReOfU0k"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
-						>
-					</h2>
-
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
-
-					<h2 class="video-title">
-						<a
-							href="https://youtu.be/X61yReOfU0k"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
-						>
-					</h2>
-
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
-
-					<h2 class="video-title">
-						<a
-							href="https://youtu.be/X61yReOfU0k"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
-						>
-					</h2>
-
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
-
-					<h2 class="video-title">
-						<a
-							href="https://youtu.be/X61yReOfU0k"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
-						>
-					</h2>
-
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
-				<article class="video">
-					<a
-						href="https://youtu.be/X61yReOfU0k"
-						target="_blank"
-						referrerpolicy="no-referrer"
-					>
-						<div class="video-image">
-							<!--Video image-->
-							<div class="video-image-container">
-								<img class="img-video" src="/images/1.png" alt="video-1" />
-								<!--Play button container-->
-								<div class="video-play">
-									<img src="/icons/play-icon.svg" alt="" />
-								</div>
-							</div></div
-					></a>
-
-					<h2 class="video-title">
-						<a
-							href="https://youtu.be/X61yReOfU0k"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							>Te enseño a usar gimp en 26 minutos - edición de imágenes</a
-						>
-					</h2>
-
-					<div class="video-tags">
-						<p class="video-tag">Imagenes gratis</p>
-						<p class="video-tag">Programa edicion alternativa con un texto super largo</p>
-						<p class="video-tag">Tutorial opern source</p>
-					</div>
-				</article>
+						<div id="tags" class="video-tags">
+							<p class="video-tag"></p>
+							<p class="video-tag"></p>
+							<p class="video-tag"></p>
+						</div>
+					</article>
+				</template>
 			</section>
 		</main>
-		<!-- <script type="module" src="/main.js"></script> -->
 		<script type="module" src="/script.js"></script>
 	</body>
 </html>
