@@ -23,6 +23,7 @@ formulario.addEventListener('submit', async (e) => {
 		const data = await response.json();
 		const videos = data.response;
 		const template = document.querySelector('template');
+		// todo: definir dónde se inserta
 		const section = document.getElementById('articles-container');
 
 		videos.forEach((element) => {
