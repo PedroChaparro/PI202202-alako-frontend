@@ -1,3 +1,13 @@
+/* Custom fonts */
+@font-face{
+  font-family: "Inter";
+  src:
+    url("fonts/Inter.woff2") format("woff2"), 
+    url("fonts/Inter.woff") format("woff"),
+    url("fonts/Inter.ttf") format("truetype");
+  font-display: swap;
+}
+
 /*Variables*/
 :root {
 	--fz-sm: 1rem;
@@ -31,12 +41,6 @@
 	--card-title-color: #ffffff;
 	--label-tag-color: #ffffff;
 	--label-bg: #4b4e6c;
-}
-
-/* Custom font */
-@font-face {
-	font-family: 'Inter';
-	src: url('/fonts/Inter-Medium.ttf');
 }
 
 /*Global styles*/
