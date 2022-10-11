@@ -16,53 +16,71 @@ icon.onclick = function () {
 // requesting videos
 formulario.addEventListener('submit', async (e) => {
 	e.preventDefault();
+
+	//requesting key of search
 	const responseKey = await fetch('http://localhost:9090/search', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(Object.fromEntries(new FormData(formulario))),
 	});
+
+	//dataKey will be sended in the body of next request
 	const dataKey = await responseKey.json();
 
+	//requesting videos
 	let intervalID = setInterval(async () => {
-		const res = await fetch('http://localhost:9090/result/obtain', {
+		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ key: dataKey.uuid }),
 		});
-		let data = await res;
+		let section = '';
+		let data = await resposeVid;
 
-		if (res.status == 200) {
+		//if 200 setInterval calls must stop
+		if (resposeVid.status == 200) {
 			clearInterval(intervalID);
 			data = await data.json();
-			console.log('object', data.response);
-			let section = '';
-
 			const videos = data.response;
-			const template = document.getElementById('template-2');
-			section = document.getElementById('articles-container');
-			const cards = section.querySelectorAll('.video-placeholder');
-			cards.forEach((card) => card.remove());
-			videos.forEach((element) => {
-				const tags = element.tags.split(', ', 3);
-				const templateClone = template.content.cloneNode(true);
-				const templateCloneTitle = templateClone.getElementById('title');
 
-				templateCloneTitle.textContent = element.title;
-				templateCloneTitle.setAttribute('href', element.url);
-				templateClone.getElementById('url').setAttribute('href', element.url);
-				templateClone.querySelector('img').setAttribute('src', element.thumbnail);
+			//if there is some video in the response
+			if(Object.keys(videos).length > 0){
+				const template = document.getElementById('template-2');
+				//section is the container of templates and future clones
+				section = document.getElementById('articles-container');
+				const cards = section.querySelectorAll('.video-placeholder');
 
-				const assignTags = templateClone.getElementById('tags').querySelectorAll('p');
-				for (let ii = 0; ii < 3; ii++) {
-					assignTags[ii].textContent = tags[ii];
-				}
+				//removing predetermined empty template (6 cards)
+				cards.forEach((card) => card.remove());
 
-				section.appendChild(templateClone);
-			});
+				//generating cards from template with the data from the response
+				videos.forEach((element) => {
+					const tags = element.tags.split(', ', 3);
+					const templateClone = template.content.cloneNode(true);
+					const templateCloneTitle = templateClone.getElementById('title');
+
+					templateCloneTitle.textContent = element.title; //title
+					templateCloneTitle.setAttribute('href', element.url); //urlvideo in title
+					templateClone.getElementById('url').setAttribute('href', element.url); //url in img
+					templateClone.querySelector('img').setAttribute('src', element.thumbnail); //thumbnail
+
+					const assignTags = templateClone.getElementById('tags').querySelectorAll('p'); //tags
+
+					//just generate 3 tags
+					for (let ii = 0; ii < 3; ii++) {
+						assignTags[ii].textContent = tags[ii];
+					}
+
+					//adding to section the clones
+					section.appendChild(templateClone);
+				});
+			} else {
+				loading();
+			}
 		} else {
 			loading();
 		}
-	}, 2000);
+	}, 3000);
 
 });
 loading();
@@ -70,33 +88,14 @@ loading();
 function loading() {
 	const section = document.getElementById('articles-container');
 	const templateOne = document.querySelector('template');
+	const cards = section.querySelectorAll('.video-placeholder');
+	const cards_videos = section.querySelectorAll('.video');
+
+	cards.forEach((card)=>{card.remove();});
+	cards_videos.forEach((card)=>{card.remove();});
+
 	for (let ii = 0; ii < 6; ii++) {
 		const templateCloneOne = templateOne.content.cloneNode(true);
 		section.appendChild(templateCloneOne);
 	}
 }
-
-/* function startTimer(data, dataKey) {
-	let data2;
-	const video = setInterval(async function () {
-		await fetch('http://localhost:9090/result/obtain', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ key: dataKey.uuid }),
-		})
-			.then(function (response) {
-				data = response;
-				data2 = response.json();
-				console.log(data2, 'sss');
-				if (response.status == 200) {
-					clearInterval(video);
-				}
-				return data2;
-			})
-			.then(function (data) {
-				console.log('function', data);
-				return data;
-			});
-	}, 5000);
-	return data;
-} */
