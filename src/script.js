@@ -2,6 +2,8 @@
 const icon = document.getElementById('icon');
 // requesting videos
 const formulario = document.getElementById('formulario');
+// initializing var of intervalID for future work
+let intervalID;
 
 // dark and light
 icon.onclick = function () {
@@ -13,7 +15,7 @@ icon.onclick = function () {
 	}
 };
 
-// requesting videos
+// event to request videos after press enter
 formulario.addEventListener('submit', async (e) => {
 	e.preventDefault();
 
@@ -28,7 +30,7 @@ formulario.addEventListener('submit', async (e) => {
 	const dataKey = await responseKey.json();
 
 	//requesting videos
-	let intervalID = setInterval(async () => {
+	intervalID = setInterval(async () => {
 		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -44,7 +46,7 @@ formulario.addEventListener('submit', async (e) => {
 			const videos = data.response;
 
 			//if there is some video in the response
-			if(Object.keys(videos).length > 0){
+			if (Object.keys(videos).length > 0) {
 				const template = document.getElementById('template-2');
 				//section is the container of templates and future clones
 				section = document.getElementById('articles-container');
@@ -57,14 +59,17 @@ formulario.addEventListener('submit', async (e) => {
 				videos.forEach((element) => {
 					const tags = element.tags.split(', ', 3);
 					const templateClone = template.content.cloneNode(true);
-					const templateCloneTitle = templateClone.getElementById('title');
+					const templateCloneTitle = templateClone.querySelector('.title');
 
 					templateCloneTitle.textContent = element.title; //title
+					templateClone.querySelector('.url');
 					templateCloneTitle.setAttribute('href', element.url); //urlvideo in title
-					templateClone.getElementById('url').setAttribute('href', element.url); //url in img
+					templateClone.querySelector('.url').setAttribute('href', element.url); //url in img
 					templateClone.querySelector('img').setAttribute('src', element.thumbnail); //thumbnail
 
-					const assignTags = templateClone.getElementById('tags').querySelectorAll('p'); //tags
+					const assignTags = templateClone
+						.querySelector('.video-tags')
+						.querySelectorAll('p'); //tags
 
 					//just generate 3 tags
 					for (let ii = 0; ii < 3; ii++) {
@@ -81,7 +86,6 @@ formulario.addEventListener('submit', async (e) => {
 			loading();
 		}
 	}, 3000);
-
 });
 loading();
 
@@ -91,8 +95,12 @@ function loading() {
 	const cards = section.querySelectorAll('.video-placeholder');
 	const cards_videos = section.querySelectorAll('.video');
 
-	cards.forEach((card)=>{card.remove();});
-	cards_videos.forEach((card)=>{card.remove();});
+	cards.forEach((card) => {
+		card.remove();
+	});
+	cards_videos.forEach((card) => {
+		card.remove();
+	});
 
 	for (let ii = 0; ii < 6; ii++) {
 		const templateCloneOne = templateOne.content.cloneNode(true);
