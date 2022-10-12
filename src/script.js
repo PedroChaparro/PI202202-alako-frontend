@@ -47,37 +47,58 @@ formulario.addEventListener('submit', async (e) => {
 
 			//if there is some video in the response
 			if (Object.keys(videos).length > 0) {
-				const template = document.getElementById('template-2');
-				//section is the container of templates and future clones
+				//section is the container of cards
 				section = document.getElementById('articles-container');
 				const cards = section.querySelectorAll('.video-placeholder');
 
-				//removing predetermined empty template (6 cards)
+				//removing predetermined empty (6 cards)
 				cards.forEach((card) => card.remove());
 
-				//generating cards from template with the data from the response
+				//generating cards from the data from the response
 				videos.forEach((element) => {
-					const tags = element.tags.split(', ', 3);
-					const templateClone = template.content.cloneNode(true);
-					const templateCloneTitle = templateClone.querySelector('.title');
+					let tags = element.tags.split(', ', 3);
+					let auxTags = '';
 
-					templateCloneTitle.textContent = element.title; //title
-					templateClone.querySelector('.url');
-					templateCloneTitle.setAttribute('href', element.url); //urlvideo in title
-					templateClone.querySelector('.url').setAttribute('href', element.url); //url in img
-					templateClone.querySelector('img').setAttribute('src', element.thumbnail); //thumbnail
+					//this helps when tags are empty or less than 3
+					tags.forEach(element => {
+						auxTags += `<p class="video-tag">${element}</p>`;
+					});
 
-					const assignTags = templateClone
-						.querySelector('.video-tags')
-						.querySelectorAll('p'); //tags
+					section.innerHTML +=
+						`
+						<article class="video template-2">
+							<a
+								href="${element.url}"
+								target="_blank"
+								referrerpolicy="no-referrer"
+								class="url"
+							>
+								<div class="video-image">
+									<!-- Video image -->
+									<div class="video-image-container">
+										<img class="img-video" src="${element.thumbnail}" alt="" />
+										<!-- Play button container -->
+										<div class="video-play">
+											<img src="icons/play-icon.svg" alt="" />
+										</div>
+									</div></div
+							></a>
 
-					//just generate 3 tags
-					for (let ii = 0; ii < 3; ii++) {
-						assignTags[ii].textContent = tags[ii];
-					}
+							<h2 class="video-title">
+								<a
+									href="${element.url}"
+									target="_blank"
+									referrerpolicy="no-referrer"
+									class="title"
+									>${element.title}</a
+								>
+							</h2>
 
-					//adding to section the clones
-					section.appendChild(templateClone);
+							<div class="video-tags">
+								${auxTags}
+							</div>
+						</article>
+						`;
 				});
 			} else {
 				loading();
@@ -89,9 +110,9 @@ formulario.addEventListener('submit', async (e) => {
 });
 loading();
 
+//generating predetermined 6 empty cards
 function loading() {
 	const section = document.getElementById('articles-container');
-	const templateOne = document.querySelector('template');
 	const cards = section.querySelectorAll('.video-placeholder');
 	const cards_videos = section.querySelectorAll('.video');
 
@@ -103,7 +124,17 @@ function loading() {
 	});
 
 	for (let ii = 0; ii < 6; ii++) {
-		const templateCloneOne = templateOne.content.cloneNode(true);
-		section.appendChild(templateCloneOne);
+		section.innerHTML +=
+			`
+				<article class="video-placeholder">
+					<div class="video-placeholder__image"></div>
+					<div class="video-placeholder__title"></div>
+					<div class="video-placeholder__tags">
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+						<div class="video-placeholder__tag"></div>
+					</div>
+				</article>
+			`;
 	}
 }
