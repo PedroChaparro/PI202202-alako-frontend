@@ -1,7 +1,9 @@
 // dark and light
 const icon = document.getElementById('icon');
-// requesting videos
+// selecting form
 const formulario = document.getElementById('formulario');
+// selectin icon-search
+const search = document.getElementById('search-icon');
 // initializing var of intervalID for future work
 let intervalID;
 
@@ -16,7 +18,13 @@ icon.onclick = function () {
 };
 
 // event to request videos after press enter
-formulario.addEventListener('submit', async (e) => {
+formulario.addEventListener('submit', searchingVideos );
+// event to request videos after click icon-search
+search.addEventListener('submit', searchingVideos );
+
+loading();
+
+async function searchingVideos (e) {
 	e.preventDefault();
 
 	//requesting key of search
@@ -107,8 +115,7 @@ formulario.addEventListener('submit', async (e) => {
 			loading();
 		}
 	}, 3000);
-});
-loading();
+}
 
 //generating predetermined 6 empty cards
 function loading() {
