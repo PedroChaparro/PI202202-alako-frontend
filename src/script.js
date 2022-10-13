@@ -20,7 +20,7 @@ icon.onclick = function () {
 // event to request videos after press enter
 formulario.addEventListener('submit', searchingVideos );
 // event to request videos after click icon-search
-search.addEventListener('submit', searchingVideos );
+search.addEventListener('click', searchingVideos );
 
 loading();
 
