@@ -1,3 +1,5 @@
+import SearchHistory from "./storage.js";
+
 // dark and light
 const icon = document.getElementById('icon');
 // selecting form
@@ -27,11 +29,14 @@ loading();
 async function searchingVideos (e) {
 	e.preventDefault();
 
+	const formEntries = Object.fromEntries(new FormData(formulario));
+	const searchTerm = formEntries["search-criteria"];
+
 	//requesting key of search
 	const responseKey = await fetch('http://localhost:9090/search', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(Object.fromEntries(new FormData(formulario))),
+		body: JSON.stringify(formEntries),
 	});
 
 	//dataKey will be sended in the body of next request
@@ -107,6 +112,15 @@ async function searchingVideos (e) {
 							</div>
 						</article>
 						`;
+
+
+					// click listener
+					const newVideo   = section.children[section.childElementCount-1];
+					const titleAncle = newVideo.querySelector(".title");
+					titleAncle.addEventListener("click", ()=>{
+						SearchHistory.saveEntry(searchTerm);
+					});
+
 				});
 			} else {
 				loading();
