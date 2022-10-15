@@ -163,13 +163,16 @@ function loading() {
 
 async function showRecommendation() {
 	let arraySearchHistory = SearchHistory.getAll();
-	arraySearchHistory.entries.push('gimp');
+	//arraySearchHistory.entries.push('gimp');
+
+	//array will be sended for next request
 	let arrayResponseKey = [];
 
 	arraySearchHistory.entries.forEach(async element => {
 		const formEntries = {"search-criteria" : element}
 		const searchTerm = formEntries["search-criteria"];
 
+		//requesting key of search
 		const responseKey = await fetch('http://localhost:9090/search', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -177,6 +180,7 @@ async function showRecommendation() {
 		});
 
 		const dataKey = await responseKey.json();
+		//save dataKey in array
 		arrayResponseKey.push(dataKey);
 		if (arrayResponseKey.length == arraySearchHistory.entries.length) {
 			saveVideosArray(arrayResponseKey);
@@ -189,15 +193,15 @@ async function saveVideosArray(array) {
 	let arrayResposeVid = [];
 	intervalID = setInterval(async () => {
 		array.forEach(async element => {
+			//requesting videos
 			const resposeVid = await fetch('http://localhost:9090/result/obtain', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ key: element.uuid }),
 			});
-			let section = '';
 			let data = await resposeVid;
 
-			//if 200 setInterval calls must stop
+			//if 200 setInterval save json videos
 			if (resposeVid.status == 200) {
 				data = await data.json();
 				const videos = data.response;
@@ -206,101 +210,72 @@ async function saveVideosArray(array) {
 				if (index > -1) {
 					array.splice(index, 1);
 				}
+				//if no more keys stop setInterval
 				if (array.length == 0) {
-					console.log(arrayResposeVid);
 					clearInterval(intervalID);
+					printArrayVideos(arrayResposeVid);
 				}
 			}
 		});
 	}, 3000);
 }
 
-async function temp(element) {
-	//requesting videos
-	intervalID = setInterval(async () => {
-		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ key: dataKey.uuid }),
-		});
-		let section = '';
-		let data = await resposeVid;
+function printArrayVideos(array) {
+	let section = document.getElementById('articles-container');
+	const cards = section.querySelectorAll('.video-placeholder');
 
-		//if 200 setInterval calls must stop
-		if (resposeVid.status == 200) {
-			clearInterval(intervalID);
-			data = await data.json();
-			const videos = data.response;
+	if (array.length > 0) {
+		//removing predetermined empty (6 cards)
+		cards.forEach((card) => card.remove());
+	}
+	array.forEach(videos => {
+		if (Object.keys(videos).length > 0) {
+			//generating cards from the array videos
+			videos.forEach((element) => {
+				let tags = element.tags.split(', ', 3);
+				let auxTags = '';
 
-			//if there is some video in the response
-			if (Object.keys(videos).length > 0) {
-				//section is the container of cards
-				section = document.getElementById('articles-container');
-				const cards = section.querySelectorAll('.video-placeholder');
+				//this helps when tags are empty or less than 3
+				tags.forEach(element => {
+					auxTags += `<p class="video-tag">${element}</p>`;
+				});
 
-				//removing predetermined empty (6 cards)
-				cards.forEach((card) => card.remove());
+				section.innerHTML +=
+					`
+					<article class="video template-2">
+						<a
+							href="${element.url}"
+							target="_blank"
+							referrerpolicy="no-referrer"
+							class="url"
+						>
+							<div class="video-image">
+								<!-- Video image -->
+								<div class="video-image-container">
+									<img class="img-video" src="${element.thumbnail}" alt="" />
+									<!-- Play button container -->
+									<div class="video-play">
+										<img src="icons/play-icon.svg" alt="" />
+									</div>
+								</div></div
+						></a>
 
-				//generating cards from the data from the response
-				videos.forEach((element) => {
-					let tags = element.tags.split(', ', 3);
-					let auxTags = '';
-
-					//this helps when tags are empty or less than 3
-					tags.forEach(element => {
-						auxTags += `<p class="video-tag">${element}</p>`;
-					});
-
-					section.innerHTML +=
-						`
-						<article class="video template-2">
+						<h2 class="video-title">
 							<a
 								href="${element.url}"
 								target="_blank"
 								referrerpolicy="no-referrer"
-								class="url"
+								class="title"
+								>${element.title}</a
 							>
-								<div class="video-image">
-									<!-- Video image -->
-									<div class="video-image-container">
-										<img class="img-video" src="${element.thumbnail}" alt="" />
-										<!-- Play button container -->
-										<div class="video-play">
-											<img src="icons/play-icon.svg" alt="" />
-										</div>
-									</div></div
-							></a>
+						</h2>
 
-							<h2 class="video-title">
-								<a
-									href="${element.url}"
-									target="_blank"
-									referrerpolicy="no-referrer"
-									class="title"
-									>${element.title}</a
-								>
-							</h2>
-
-							<div class="video-tags">
-								${auxTags}
-							</div>
-						</article>
-						`;
-
-
-					// click listener
-					const newVideo   = section.children[section.childElementCount-1];
-					const titleAncle = newVideo.querySelector(".title");
-					titleAncle.addEventListener("click", ()=>{
-						SearchHistory.saveEntry(searchTerm);
-					});
-
-				});
-			} else {
-				loading();
-			}
-		} else {
-			loading();
+						<div class="video-tags">
+							${auxTags}
+						</div>
+					</article>
+					`;
+			});
 		}
-	}, 3000);
+	});
 }
