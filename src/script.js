@@ -163,7 +163,7 @@ function loading() {
 
 async function showRecommendation() {
 	let arraySearchHistory = SearchHistory.getAll();
-	//arraySearchHistory.entries.push('gimp');
+	arraySearchHistory.entries.push('gimp');
 	let arrayResponseKey = [];
 
 	arraySearchHistory.entries.forEach(async element => {
@@ -179,32 +179,43 @@ async function showRecommendation() {
 		const dataKey = await responseKey.json();
 		arrayResponseKey.push(dataKey);
 		if (arrayResponseKey.length == arraySearchHistory.entries.length) {
-			temp2(arrayResponseKey);
+			saveVideosArray(arrayResponseKey);
 		}
 		
 	});
 }
 
-async function temp2(array) {
-	array.forEach(async element => {
-		console.log(element);
-	});
+async function saveVideosArray(array) {
+	let arrayResposeVid = [];
+	intervalID = setInterval(async () => {
+		array.forEach(async element => {
+			const resposeVid = await fetch('http://localhost:9090/result/obtain', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ key: element.uuid }),
+			});
+			let section = '';
+			let data = await resposeVid;
+
+			//if 200 setInterval calls must stop
+			if (resposeVid.status == 200) {
+				data = await data.json();
+				const videos = data.response;
+				arrayResposeVid.push(videos);
+				let index = array.indexOf(element);
+				if (index > -1) {
+					array.splice(index, 1);
+				}
+				if (array.length == 0) {
+					console.log(arrayResposeVid);
+					clearInterval(intervalID);
+				}
+			}
+		});
+	}, 3000);
 }
 
 async function temp(element) {
-	const formEntries = {"search-criteria" : element}
-	const searchTerm = formEntries["search-criteria"];
-
-	//requesting key of search
-	const responseKey = await fetch('http://localhost:9090/search', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(formEntries),
-	});
-
-	//dataKey will be sended in the body of next request
-	const dataKey = await responseKey.json();
-
 	//requesting videos
 	intervalID = setInterval(async () => {
 		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
