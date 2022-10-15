@@ -25,7 +25,12 @@ formulario.addEventListener('submit', searchingVideos );
 search.addEventListener('click', searchingVideos );
 
 loading();
-showRecommendation();
+
+let checkCookie = SearchHistory.getAll();
+
+if (checkCookie.entries.length > 0) {
+	showRecommendation();
+}
 
 async function searchingVideos (e) {
 	e.preventDefault();

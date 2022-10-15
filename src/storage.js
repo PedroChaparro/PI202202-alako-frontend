@@ -25,7 +25,13 @@ export default class SearchHistory{
 		hist.push(entry);
 
 		// unique entries
-		const newHist = hist.filter((item, index) => hist.indexOf(item) === index);
+		let newHist = hist.filter((item, index) => hist.indexOf(item) === index);
+
+		// max length 10 in cookie
+		if (newHist.length > 10) {
+			newHist = newHist.slice(1,11)
+		}
+
 		const cookie = {
 			entries: newHist
 		}
