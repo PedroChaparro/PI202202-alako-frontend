@@ -25,6 +25,7 @@ formulario.addEventListener('submit', searchingVideos );
 search.addEventListener('click', searchingVideos );
 
 loading();
+showRecommendation();
 
 async function searchingVideos (e) {
 	e.preventDefault();
@@ -158,4 +159,137 @@ function loading() {
 				</article>
 			`;
 	}
+}
+
+async function showRecommendation() {
+	let arraySearchHistory = SearchHistory.getAll();
+	//arraySearchHistory.entries.push('gimp');
+	let arrayResponseKey = [];
+
+	arraySearchHistory.entries.forEach(async element => {
+		const formEntries = {"search-criteria" : element}
+		const searchTerm = formEntries["search-criteria"];
+
+		const responseKey = await fetch('http://localhost:9090/search', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(formEntries),
+		});
+
+		const dataKey = await responseKey.json();
+		arrayResponseKey.push(dataKey);
+		if (arrayResponseKey.length == arraySearchHistory.entries.length) {
+			temp2(arrayResponseKey);
+		}
+		
+	});
+}
+
+async function temp2(array) {
+	array.forEach(async element => {
+		console.log(element);
+	});
+}
+
+async function temp(element) {
+	const formEntries = {"search-criteria" : element}
+	const searchTerm = formEntries["search-criteria"];
+
+	//requesting key of search
+	const responseKey = await fetch('http://localhost:9090/search', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(formEntries),
+	});
+
+	//dataKey will be sended in the body of next request
+	const dataKey = await responseKey.json();
+
+	//requesting videos
+	intervalID = setInterval(async () => {
+		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ key: dataKey.uuid }),
+		});
+		let section = '';
+		let data = await resposeVid;
+
+		//if 200 setInterval calls must stop
+		if (resposeVid.status == 200) {
+			clearInterval(intervalID);
+			data = await data.json();
+			const videos = data.response;
+
+			//if there is some video in the response
+			if (Object.keys(videos).length > 0) {
+				//section is the container of cards
+				section = document.getElementById('articles-container');
+				const cards = section.querySelectorAll('.video-placeholder');
+
+				//removing predetermined empty (6 cards)
+				cards.forEach((card) => card.remove());
+
+				//generating cards from the data from the response
+				videos.forEach((element) => {
+					let tags = element.tags.split(', ', 3);
+					let auxTags = '';
+
+					//this helps when tags are empty or less than 3
+					tags.forEach(element => {
+						auxTags += `<p class="video-tag">${element}</p>`;
+					});
+
+					section.innerHTML +=
+						`
+						<article class="video template-2">
+							<a
+								href="${element.url}"
+								target="_blank"
+								referrerpolicy="no-referrer"
+								class="url"
+							>
+								<div class="video-image">
+									<!-- Video image -->
+									<div class="video-image-container">
+										<img class="img-video" src="${element.thumbnail}" alt="" />
+										<!-- Play button container -->
+										<div class="video-play">
+											<img src="icons/play-icon.svg" alt="" />
+										</div>
+									</div></div
+							></a>
+
+							<h2 class="video-title">
+								<a
+									href="${element.url}"
+									target="_blank"
+									referrerpolicy="no-referrer"
+									class="title"
+									>${element.title}</a
+								>
+							</h2>
+
+							<div class="video-tags">
+								${auxTags}
+							</div>
+						</article>
+						`;
+
+
+					// click listener
+					const newVideo   = section.children[section.childElementCount-1];
+					const titleAncle = newVideo.querySelector(".title");
+					titleAncle.addEventListener("click", ()=>{
+						SearchHistory.saveEntry(searchTerm);
+					});
+
+				});
+			} else {
+				loading();
+			}
+		} else {
+			loading();
+		}
+	}, 3000);
 }
