@@ -6,6 +6,9 @@ const formulario = document.getElementById('formulario');
 const search = document.getElementById('search-icon');
 // initializing var of intervalID for future work
 let intervalID;
+// arrays auxiliares para llevar conteo
+let queueID = [];
+let queueRes = [];
 
 // dark and light
 icon.onclick = function () {
@@ -26,6 +29,7 @@ loading();
 
 async function searchingVideos (e) {
 	e.preventDefault();
+	loading();
 
 	//requesting key of search
 	const responseKey = await fetch('http://localhost:9090/search', {
@@ -36,25 +40,46 @@ async function searchingVideos (e) {
 
 	//dataKey will be sended in the body of next request
 	const dataKey = await responseKey.json();
+	//new datakey searched is added
+	queueID.push(dataKey);
 
 	//requesting videos
 	intervalID = setInterval(async () => {
-		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
+
+		const responseVid = await fetch('http://localhost:9090/result/obtain', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ key: dataKey.uuid }),
 		});
 		let section = '';
-		let data = await resposeVid;
 
-		//if 200 setInterval calls must stop
-		if (resposeVid.status == 200) {
-			clearInterval(intervalID);
+		//number of false error is when res is successfull, a push must be made
+		let data = await responseVid;
+		let dataAux = await data.clone().json();
+		if(dataAux.error == false){
+			queueRes.push(1);
+		}
+
+		//if 200 setInterval render videos of the res
+		if (responseVid.status == 200) {
+
+			//if responses and number of ids searched is the same there is no more info to request to show
+			//all intervals must be deleted
+			if(queueRes.length == queueID.length){
+				for (let i = 1; i < intervalID; i++) {
+					window.clearInterval(i);
+				}
+				clearInterval(intervalID);
+				queueID = [];
+				queueRes = [];
+			}
+
 			data = await data.json();
 			const videos = data.response;
 
 			//if there is some video in the response
 			if (Object.keys(videos).length > 0) {
+				loading();
 				//section is the container of cards
 				section = document.getElementById('articles-container');
 				const cards = section.querySelectorAll('.video-placeholder');
@@ -84,7 +109,7 @@ async function searchingVideos (e) {
 								<div class="video-image">
 									<!-- Video image -->
 									<div class="video-image-container">
-										<img class="img-video" src="${element.thumbnail}" alt="" />
+										<img class="img-video" src="${element.thumbnail}" alt="${element.title} youtube thumbnail" />
 										<!-- Play button container -->
 										<div class="video-play">
 											<img src="icons/play-icon.svg" alt="" />
@@ -108,11 +133,7 @@ async function searchingVideos (e) {
 						</article>
 						`;
 				});
-			} else {
-				loading();
 			}
-		} else {
-			loading();
 		}
 	}, 3000);
 }
