@@ -36,7 +36,7 @@ async function searchingVideos(e) {
 	const searchTerm = formEntries["search-criteria"];
 
 	//requesting key of search
-	const responseKey = await fetch('http://192.168.1.6:9090/search', {
+	const responseKey = await fetch('http://localhost:9090/search', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(formEntries),
@@ -47,7 +47,7 @@ async function searchingVideos(e) {
 
 	//requesting videos
 	intervalID = setInterval(async () => {
-		const responseVid = await fetch('http://192.168.1.6:9090/result/obtain', {
+		const responseVid = await fetch('http://localhost:9090/result/obtain', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ key: dataKey.uuid }),
