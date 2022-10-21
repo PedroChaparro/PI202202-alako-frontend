@@ -89,7 +89,6 @@ async function searchingVideos(e) {
 					const ancles = newVideo.getElementsByTagName("a");
 					for (const a of ancles){
 						a.addEventListener("click", ()=>{
-							console.log("mmi");
 							SearchHistory.saveEntry(searchTerm);
 						});
 					}
