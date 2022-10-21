@@ -1,13 +1,12 @@
 import SearchHistory from "./storage.js";
 
-// dark and light
 const icon = document.getElementById('icon');
-// selecting form
 const formulario = document.getElementById('formulario');
-// selectin icon-search
 const search = document.getElementById('search-icon');
+const videoTemplate = document.getElementById('video-template');
+
 // initializing var of intervalID for future work
-let intervalID;
+let intervalID = -1;
 
 // dark and light
 icon.onclick = function () {
@@ -20,9 +19,9 @@ icon.onclick = function () {
 };
 
 // event to request videos after press enter
-formulario.addEventListener('submit', searchingVideos );
+formulario.addEventListener('submit', searchingVideos);
 // event to request videos after click icon-search
-search.addEventListener('click', searchingVideos );
+search.addEventListener('click', searchingVideos);
 
 loading();
 
@@ -32,8 +31,12 @@ if (checkCookie.entries.length > 0) {
 	showRecommendation();
 }
 
-async function searchingVideos (e) {
+async function searchingVideos(e) {
 	e.preventDefault();
+	loading();
+
+	// Remove previous intervals
+	if (intervalID !== -1) window.clearInterval(intervalID);
 
 	const formEntries = Object.fromEntries(new FormData(formulario));
 	const searchTerm = formEntries["search-criteria"];
@@ -50,24 +53,22 @@ async function searchingVideos (e) {
 
 	//requesting videos
 	intervalID = setInterval(async () => {
-		const resposeVid = await fetch('http://localhost:9090/result/obtain', {
+		const responseVid = await fetch('http://localhost:9090/result/obtain', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ key: dataKey.uuid }),
 		});
-		let section = '';
-		let data = await resposeVid;
 
-		//if 200 setInterval calls must stop
-		if (resposeVid.status == 200) {
-			clearInterval(intervalID);
-			data = await data.json();
+		const data = await responseVid.json();
+
+		//if 200 setInterval render videos of the res
+		if (responseVid.status == 200) {
 			const videos = data.response;
+			window.clearInterval(intervalID);
 
-			//if there is some video in the response
 			if (Object.keys(videos).length > 0) {
 				//section is the container of cards
-				section = document.getElementById('articles-container');
+				const section = document.getElementById('articles-container');
 				const cards = section.querySelectorAll('.video-placeholder');
 
 				//removing predetermined empty (6 cards)
@@ -75,64 +76,30 @@ async function searchingVideos (e) {
 
 				//generating cards from the data from the response
 				videos.forEach((element) => {
-					let tags = element.tags.split(', ', 3);
+					// Get ffirst non-empty tags
+					let tags = element.tags.split(', ');
+					tags = tags.filter((tag) => tag !== '');
+					tags = tags.slice(0, 3);
+
+					// Create tags  html structure
 					let auxTags = '';
 
 					//this helps when tags are empty or less than 3
-					tags.forEach(element => {
+					tags.forEach((element) => {
 						auxTags += `<p class="video-tag">${element}</p>`;
 					});
 
-					section.innerHTML +=
-						`
-						<article class="video template-2">
-							<a
-								href="${element.url}"
-								target="_blank"
-								referrerpolicy="no-referrer"
-								class="url"
-							>
-								<div class="video-image">
-									<!-- Video image -->
-									<div class="video-image-container">
-										<img class="img-video" src="${element.thumbnail}" alt="" />
-										<!-- Play button container -->
-										<div class="video-play">
-											<img src="icons/play-icon.svg" alt="" />
-										</div>
-									</div></div
-							></a>
-
-							<h2 class="video-title">
-								<a
-									href="${element.url}"
-									target="_blank"
-									referrerpolicy="no-referrer"
-									class="title"
-									>${element.title}</a
-								>
-							</h2>
-
-							<div class="video-tags">
-								${auxTags}
-							</div>
-						</article>
-						`;
-
+					const newVideo = section.appendChild(createCard(element, auxTags));
 
 					// click listener
-					const newVideo   = section.children[section.childElementCount-1];
-					const titleAncle = newVideo.querySelector(".title");
-					titleAncle.addEventListener("click", ()=>{
-						SearchHistory.saveEntry(searchTerm);
-					});
-
+					const ancles = newVideo.getElementsByTagName("a");
+					for (const a of ancles){
+						a.addEventListener("click", ()=>{
+							SearchHistory.saveEntry(searchTerm);
+						});
+					}
 				});
-			} else {
-				loading();
 			}
-		} else {
-			loading();
 		}
 	}, 3000);
 }
@@ -151,8 +118,7 @@ function loading() {
 	});
 
 	for (let ii = 0; ii < 6; ii++) {
-		section.innerHTML +=
-			`
+		section.innerHTML += `
 				<article class="video-placeholder">
 					<div class="video-placeholder__image"></div>
 					<div class="video-placeholder__title"></div>
@@ -237,50 +203,32 @@ function printArrayVideos(array) {
 		if (Object.keys(videos).length > 0) {
 			//generating cards from the array videos
 			videos.forEach((element) => {
-				let tags = element.tags.split(', ', 3);
+				// Get ffirst non-empty tags
+				let tags = element.tags.split(', ');
+				tags = tags.filter((tag) => tag !== '');
+				tags = tags.slice(0, 3);
+
+				// Create tags  html structure
 				let auxTags = '';
 
 				//this helps when tags are empty or less than 3
-				tags.forEach(element => {
+				tags.forEach((element) => {
 					auxTags += `<p class="video-tag">${element}</p>`;
 				});
 
-				section.innerHTML +=
-					`
-					<article class="video template-2">
-						<a
-							href="${element.url}"
-							target="_blank"
-							referrerpolicy="no-referrer"
-							class="url"
-						>
-							<div class="video-image">
-								<!-- Video image -->
-								<div class="video-image-container">
-									<img class="img-video" src="${element.thumbnail}" alt="" />
-									<!-- Play button container -->
-									<div class="video-play">
-										<img src="icons/play-icon.svg" alt="" />
-									</div>
-								</div></div
-						></a>
-
-						<h2 class="video-title">
-							<a
-								href="${element.url}"
-								target="_blank"
-								referrerpolicy="no-referrer"
-								class="title"
-								>${element.title}</a
-							>
-						</h2>
-
-						<div class="video-tags">
-							${auxTags}
-						</div>
-					</article>
-					`;
+				const newVideo = section.appendChild(createCard(element, auxTags));
 			});
 		}
 	});
+}
+
+function createCard(video, tags) {
+	let newv = videoTemplate.content.firstElementChild.cloneNode(true);
+	newv.querySelector(".url").href      = video.url;
+	newv.querySelector(".img-video").src = video.thumbnail;
+	newv.querySelector(".img-video").alt = video.title;
+	newv.querySelector(".title").href    = video.url;
+	newv.querySelector(".title").textContent    = video.title;
+	newv.querySelector(".video-tags").innerHTML = tags;
+	return newv;
 }
