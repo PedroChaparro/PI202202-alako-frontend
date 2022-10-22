@@ -22,7 +22,7 @@ export default class SearchHistory{
 	// saves a new history
 	static saveEntry(entry){
 		const hist = SearchHistory.getAll().entries;
-		hist.push(entry);
+		hist.push(entry.toLowerCase());
 
 		// unique entries
 		const newHist = hist.filter((item, index) => hist.indexOf(item) === index);
@@ -31,6 +31,7 @@ export default class SearchHistory{
 		}
 
 		// save cookie
-		document.cookie = JSON.stringify(cookie);
+		document.cookie = JSON.stringify(cookie) +
+			"; SameSite=Strict; expires=Tue, 19 Jan 2038 03:14:07 UTC";
 	}
 }
