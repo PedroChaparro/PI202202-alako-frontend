@@ -1,9 +1,9 @@
-// dark and light
+import SearchHistory from "./storage.js";
+
 const icon = document.getElementById('icon');
-// selecting form
 const formulario = document.getElementById('formulario');
-// selectin icon-search
 const search = document.getElementById('search-icon');
+const videoTemplate = document.getElementById('video-template');
 
 // initializing var of intervalID for future work
 let intervalID = -1;
@@ -32,11 +32,14 @@ async function searchingVideos(e) {
 	// Remove previous intervals
 	if (intervalID !== -1) window.clearInterval(intervalID);
 
+	const formEntries = Object.fromEntries(new FormData(formulario));
+	const searchTerm = formEntries["search-criteria"];
+
 	//requesting key of search
 	const responseKey = await fetch('http://localhost:9090/search', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(Object.fromEntries(new FormData(formulario))),
+		body: JSON.stringify(formEntries),
 	});
 
 	//dataKey will be sended in the body of next request
@@ -80,7 +83,15 @@ async function searchingVideos(e) {
 						auxTags += `<p class="video-tag">${element}</p>`;
 					});
 
-					section.innerHTML += createCard(element, auxTags);
+					const newVideo = section.appendChild(createCard(element, auxTags));
+
+					// click listener
+					const ancles = newVideo.getElementsByTagName("a");
+					for (const a of ancles){
+						a.addEventListener("click", ()=>{
+							SearchHistory.saveEntry(searchTerm);
+						});
+					}
 				});
 			}
 		}
@@ -116,38 +127,12 @@ function loading() {
 }
 
 function createCard(video, tags) {
-	return `
-		<article class="video template-2">
-			<a
-				href="${video.url}"
-				target="_blank"
-				referrerpolicy="no-referrer"
-				class="url"
-			>
-				<div class="video-image">
-					<!-- Video image -->
-					<div class="video-image-container">
-						<img class="img-video" src="${video.thumbnail}" alt="${video.title} youtube thumbnail" />
-						<!-- Play button container -->
-						<div class="video-play">
-							<img src="icons/play-icon.svg" alt="" />
-						</div>
-					</div></div
-			></a>
-
-			<h2 class="video-title">
-				<a
-					href="${video.url}"
-					target="_blank"
-					referrerpolicy="no-referrer"
-					class="title"
-					>${video.title}</a
-				>
-			</h2>
-
-			<div class="video-tags">
-				${tags}
-			</div>
-		</article>
-	`;
+	let newv = videoTemplate.content.firstElementChild.cloneNode(true);
+	newv.querySelector(".url").href      = video.url;
+	newv.querySelector(".img-video").src = video.thumbnail;
+	newv.querySelector(".img-video").alt = video.title;
+	newv.querySelector(".title").href    = video.url;
+	newv.querySelector(".title").textContent    = video.title;
+	newv.querySelector(".video-tags").innerHTML = tags;
+	return newv;
 }
