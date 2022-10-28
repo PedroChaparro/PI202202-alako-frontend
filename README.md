@@ -2,7 +2,7 @@
 
  This repository contains all the files related to project's front-end client. 
  
-- 📜 You can find data repository [here](https://github.com/PedroChaparro/PI202202-alako-frontend)
+- 📜 You can find data repository [here](https://github.com/PedroChaparro/PI202202-alako-data)
 - 🐳 You can find back-end repository [here](https://github.com/PedroChaparro/PI202202-alako-backend)
 
 ## Subjects / topics
